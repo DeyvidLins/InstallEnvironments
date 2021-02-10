@@ -5,7 +5,7 @@ Encontre o URL de download para seu tarball neste arquivo de manifesto . o downl
 
     Baixe ou wget um desses tarballs.
 
-        1ª - wget https://developer.salesforce.com/media/salesforce-cli/sfdx-cli/channels/stable/fdx-linux-amd64.tar.xz
+        1ª - wget https://developer.salesforce.com/media/salesforce-cli/sfdx-cli/channels/stable/sfdx-linux-amd64.tar.xz
 
 Crie um sfdx diretório .
 
