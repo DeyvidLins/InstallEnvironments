@@ -20,4 +20,4 @@ Execute o script de instalação.
 
         4ª - ./sfdx/install
 
-O Salesforce CLI é instalado em / usr / local / bin / sfdx . Os instaladores são projetados para fornecer permissões para os diretórios de instalação. Se você receber permissão ou acessar erros que você não pode endereçar usando sudo ou chmod , tente instalar a CLI usando npm . 
+O Salesforce CLI é instalado em / usr / local / bin / sfdx . Os instaladores são projetados para fornecer permissões para os diretórios de instalação. Se você receber permissão ou acessar erros que você não pode endereçar usando sudo ou chmod , tente instalar a CLI usando npm. 
