@@ -1,4 +1,4 @@
-1ª Vá para a pasta scripts: 
+1ª Vá para a pasta scripts: <br/>
 cd scripts:heavy_check_mark:
 2ª Execute o comando abaixo:
 ./nexus-nginxproxy.sh:heavy_check_mark:
