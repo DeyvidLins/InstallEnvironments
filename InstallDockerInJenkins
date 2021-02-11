@@ -1,0 +1,18 @@
+docker/docker-install
+O objetivo do script de instalação é para uma conveniência para uma rápida instalar as últimas versões do Docker-CE no linux suportado distros. Não é recomendado depender deste script para implantação aos sistemas de produção. Para obter instruções mais completas sobre a instalação nas distros suportadas, veja a instalação instruções .
+
+Este repositório é mantido exclusivamente pela Docker, Inc.
+Uso: 
+De https://get.docker.com: 
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+De https://test.docker.com: 
+curl -fsSL https://test.docker.com -o test-docker.sh
+sh test-docker.sh
+
+Instale também o docker compose
+
+apt-get install docker-compose
+
+docker-compose -v
+docker -v
