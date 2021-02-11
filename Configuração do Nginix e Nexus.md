@@ -14,5 +14,5 @@ docker login 8083 para login no hosted;:heavy_check_mark:<br/>
 <h3>9ª Liste suas images e user o docker tag:</h3><br/>
 Ex.: docker tag {NOME_IMAGEM_ANTIGA} {NOME_IMAGEM_NOVA:1.O}:heavy_check_mark: (Obs.: Sem as Chaves)
 <h3>10ª Execute o docker push:</h3><br/>
-docker <NOME_IMAGEM_NOVA:1.O>:heavy_check_mark:<br/>
+docker {NOME_IMAGEM_NOVA:1.O}:heavy_check_mark:<br/>(Obs.: Sem as Chaves)
 <h3>11ª Pronto</h3><br/>
