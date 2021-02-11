@@ -11,7 +11,7 @@ http://localhost:8081:heavy_check_mark:<br/>
 <h3>8ª Por fim, execute o comando abaixo (Obs. Execute somente o que você deseja realizar o login):</h3><br/>
 docker login 8082 para login no proxy;:heavy_check_mark:<br/>
 docker login 8083 para login no hosted;:heavy_check_mark:<br/>
-<h3>9ª Liste suas images e user o docker tag:<br/>
+<h3>9ª Liste suas images e user o docker tag:</h3><br/>
 Ex.: docker tag <NOME_IMAGEM_ANTIGA> <NOME_IMAGEM_NOVA:1.O>:heavy_check_mark:
 <h3>10ª Execute o docker push <NOME_IMAGEM_NOVA:1.O>:heavy_check_mark:</h3><br/>
 <h3>11ª Pronto</h3><br/>
