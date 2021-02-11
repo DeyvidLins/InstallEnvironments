@@ -1,0 +1,16 @@
+
+CRIE O PROJETO:
+	sfdx force:project:create -n geolocation
+
+**Criar uma organização Scratch
+Agora que você entende o poder das organizações do zero, aqui está o fluxo de trabalho básico de quando você as usa no Modelo de Desenvolvimento de Pacote .
+
+Envie sua fonte local e metadados para uma organização temporária.
+Puxe todas as alterações feitas na organização scratch de volta para seu projeto local.
+Sincronize este projeto com seu repositório de controle de origem.**
+
+
+1-Na janela de comando, mude para o diretório do projeto de geolocalização.
+	cd geolocation
+2-Crie uma organização temporária com o alias GeoAppScratch.
+	sfdx force:org:create -s -f config/project-scratch-def.json -a GeoAppScratch

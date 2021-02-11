@@ -1,0 +1,110 @@
+Crie um projeto chamado MutualFundExplorer:
+sfdx force:project:create -n MutualFundExplorer
+
+Mude para o MutualFundExplorerdiretório.
+cd MutualFundExplorer
+
+crie uma organização temporária com o alias TempUnmanaged e defina-a como padrão:
+sfdx force:org:create -f config/project-scratch-def.json -a TempUnmanaged -s
+
+*Instale o pacote não gerenciado*
+
+OBS: Criar um pacote sfdx force:package:create -n GIFter -d "Using GIPHY to find GIFs 
+			and post to Chatter" -r force-app -t Unlocked -v DevHub
+
+
+Instale o pacote gerenciado especificando seu ID exclusivo:
+sfdx force:package:install -p 04t46000001DnYm -w 3
+
+Se a instalação do pacote não for concluída a tempo, execute o 
+force:package:install:reportcomando que é exibido pelo force:package:install 
+comando. O comando de relatório é semelhante a este:
+sfdx force:package:install:report -i <id> -u TempUnmanaged
+
+Abra a organização scratch.
+sfdx force:org:open
+
+
+Crie o conjunto de permissões
+Antes de terminarmos na organização, vamos criar um conjunto de 
+permissões que usaremos para fornecer acesso aos objetos personalizados adicionados pelo aplicativo DreamInvest.
+
+Em Configuração, entre Permission Setsna caixa Busca rápida e selecione Conjuntos de permissões .
+Clique em Novo .
+Para Etiqueta, insira DreamInvest.
+Para o nome da API, digite DreamInvest.
+Clique em Salvar .
+Em Aplicativos, clique em Aplicativos atribuídos | Editar .
+Em Aplicativos disponíveis, selecione DreamInvest (DreamInvest) e clique em Adicionar para 
+movê-lo para Aplicativos habilitados.
+Clique em Salvar .
+
+
+Execute o seguinte comando na CLI:
+sfdx force:source:pull -u TempUnmanaged
+
+*Extraia a fonte do pacote para o seu projeto*
+
+Dentro do seu projeto, usando a ferramenta de sua escolha, crie uma pasta chamada mdapipackage.
+Recupere o conteúdo do pacote DreamInvest na mdapipackagepasta:
+sfdx force:mdapi:retrieve -s -r ./mdapipackage -p DreamInvest -u TempUnmanaged -w 10
+
+Mude para a mdapipackagepasta e verifique se o unpackaged.ziparquivo aparece.
+Descompacte o unpackaged.ziparquivo.
+Exclua o unpackaged.ziparquivo.
+
+*Converter a fonte e enviar para uma nova organização do Scratch*
+
+Na MutualFundExplorerpasta, converta o conteúdo da mdapipackagepasta:
+sfdx force:mdapi:convert -r mdapipackage/
+
+Limpe seu projeto excluindo a mdapipackagepasta.
+Exclua a organização scratch:
+sfdx force:org:delete -u TempUnmanaged
+
+*Verifique seu trabalho*
+
+Crie uma nova organização scratch:
+sfdx force:org:create -s -f config/project-scratch-def.json
+
+
+nvie sua fonte local e metadados para a organização temporária:
+sfdx force:source:push
+
+Atribua um conjunto de permissões:
+sfdx force:user:permset:assign -n DreamInvest 
+
+Abra sua organização:
+sfdx force:org:open
+
+*Registre seu ambiente de teste*
+
+Faça login em sua organização Trailhead Playground e crie um alias para ela.
+sfdx auth:web:login -a MyTP
+
+
+Confirme se esta organização está disponível:
+sfdx force:org:list
+
+*Converter fonte em formato de metadados e implantar*
+
+Crie uma pasta para colocar os arquivos convertidos chamados mdapioutput.
+mkdir mdapioutput
+
+Em seguida, execute o comando convert:
+sfdx force:source:convert -d mdapioutput/
+
+Implante-o em seu ambiente de teste:
+sfdx force:mdapi:deploy -d mdapioutput/ -u MyTP -w 100
+
+Atribua um conjunto de permissões:
+sfdx force:user:permset:assign -n DreamInvest -u MyTP
+
+Execute seus testes e interaja com o aplicativo:
+sfdx force:org:open -u MyTP
+
+
+
+
+
+

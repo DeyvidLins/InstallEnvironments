@@ -1,0 +1,172 @@
+De dentro do geolocationdiretório do projeto, execute este comando a partir da raiz do seu projeto.
+sfdx force:apex:class:create -n AccountSearchController -d force-app/main/default/classes
+
+Abra AccountSearchController.clse substitua o código do scaffold por este código e salve o arquivo.
+public with sharing class AccountSearchController {
+    @AuraEnabled
+    public static List<Account> searchAccounts( String searchTerm ) {
+        List<Account> accounts = new List<Account>();
+        if ( String.isNotBlank( searchTerm ) ) {
+            List<List<SObject>> searchResults = [
+                FIND :searchTerm
+                RETURNING Account(
+                    Id, Name, Phone, Website,
+                    BillingStreet, BillingCity,
+                    BillingState, BillingPostalCode
+                    ORDER BY Name
+                    LIMIT 10
+                )
+            ];
+            accounts = searchResults[0];
+        }
+        return accounts;
+    }
+}
+
+
+Agora, envie (sincronize) seu novo código para a organização scratch.
+sfdx force:source:push
+
+
+*Criar o evento Accounts Loaded Aura*
+
+Crie o evento na pasta aura.
+sfdx force:lightning:event:create -n AccountsLoaded -d force-app/main/default/aura
+
+Envie seu novo código para a organização scratch.
+sfdx force:source:push
+
+*Crie o componente Aura de pesquisa de conta*
+
+Crie o componente na aurapasta:
+sfdx force:lightning:component:create -n AccountSearch -d force-app/main/default/aura
+
+Abra AccountSearch.cmpe substitua seu conteúdo pelo código a seguir e salve o arquivo.
+<aura:component controller="AccountSearchController">
+    <aura:registerEvent name="accountsLoaded" type="c:AccountsLoaded"/>
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}"/>
+    <aura:attribute name="searchTerm" type="String" default="San Francisco"/>
+    <lightning:card title="Account Search" iconName="standard:search">
+        <div class="slds-form slds-p-around_x-small">
+            <lightning:input
+                label="Search"
+                variant="label-hidden"
+                value="{!v.searchTerm}"
+                placeholder="Search by name, phone, website, or address"
+                onchange="{!c.onSearchTermChange}"/>
+        </div>
+    </lightning:card>
+</aura:component>
+
+Abra AccountSearchController.jse substitua seu conteúdo pelo código a seguir e salve o arquivo.
+({
+    onInit: function( component, event, helper ) {
+        // proactively search on component initialization
+        var searchTerm = component.get( "v.searchTerm" );
+        helper.handleSearch( component, searchTerm );
+    },
+    onSearchTermChange: function( component, event, helper ) {
+        // search anytime the term changes in the input field
+        var searchTerm = component.get( "v.searchTerm" );
+        helper.handleSearch( component, searchTerm );
+    }
+})
+
+
+Abra AccountSearchHelper.jse substitua seu conteúdo pelo código a seguir e salve o arquivo.
+({
+    // code in the helper is reusable by both
+    // the controller.js and helper.js files
+    handleSearch: function( component, searchTerm ) {
+        var action = component.get( "c.searchAccounts" );
+        action.setParams({
+            searchTerm: searchTerm
+        });
+        action.setCallback( this, function( response ) {
+            var event = $A.get( "e.c:AccountsLoaded" );
+            event.setParams({
+                "accounts": response.getReturnValue()
+            });
+            event.fire();
+        });
+        $A.enqueueAction( action );
+    }
+})
+
+Envie a nova fonte para a organização scratch.
+sfdx force:source:push
+
+*Crie o componente Aura da lista de contas*
+
+Crie o componente na aurapasta.
+sfdx force:lightning:component:create -n AccountList -d force-app/main/default/aura
+
+bra AccountList.cmpe substitua seu conteúdo pelo código a seguir e salve o arquivo.
+<aura:component>
+    <aura:handler event="c:AccountsLoaded" action="{!c.onAccountsLoaded}"/>
+    <lightning:navigation aura:id="navigation"/>
+    <aura:attribute name="rows" type="Map[]"/>
+    <aura:attribute name="cols" type="Map[]"/>
+    <lightning:card title="Account List" iconName="standard:account">
+        <lightning:datatable
+            data="{!v.rows}"
+            columns="{!v.cols}"
+            keyField="Id"
+            hideCheckboxColumn="true"
+            showRowNumberColumn="true"
+            onrowaction="{!c.onRowAction}"/>
+    </lightning:card>
+</aura:component>
+
+Abra AccountListController.jse substitua seu conteúdo pelo código a seguir e salve o arquivo.
+({
+    onAccountsLoaded: function( component, event, helper ) {
+        var cols = [
+            {
+                'label': 'Name',
+                'fieldName': 'Name',
+                'type': 'text'
+            },
+            {
+                'label': 'Phone',
+                'fieldName': 'Phone',
+                'type': 'phone'
+            },
+            {
+                'label': 'Website',
+                'fieldName': 'Website',
+                'type': 'url'
+            },
+            {
+                'label': 'Action',
+                'type': 'button',
+                'typeAttributes': {
+                    'label': 'View details',
+                    'name': 'view_details'
+                }
+            }
+        ];
+        component.set( 'v.cols', cols );
+        component.set( 'v.rows', event.getParam( 'accounts' ) );
+    },
+    onRowAction: function( component, event, helper ) {
+        var action = event.getParam( 'action' );
+        var row = event.getParam( 'row' );
+        if ( action.name == 'view_details' ) {
+            var navigation = component.find( 'navigation' );
+            navigation.navigate({
+                'type': 'standard__recordPage',
+                'attributes': {
+                    'objectApiName': 'Account',
+                    'recordId': row.Id,
+                    'actionName': 'view'
+                }
+            });
+        }
+    }
+})
+
+Envie o novo código para a organização temporária.
+sfdx force:source:push
+
+

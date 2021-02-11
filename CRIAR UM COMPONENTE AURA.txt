@@ -1,0 +1,73 @@
+Crie o componente AccountMap na aurapasta.
+sfdx force:lightning:component:create -n AccountMap -d force-app/main/default/aura
+
+Abra AccountMap.cmpe substitua seu conteúdo pelo código a seguir e salve o arquivo.
+<aura:component>
+    <aura:handler event="c:AccountsLoaded" action="{!c.onAccountsLoaded}"/>
+    <aura:attribute name="mapMarkers" type="Map[]"/>
+    <lightning:card title="Account Map" iconName="action:map">
+        <lightning:map mapMarkers="{!v.mapMarkers}"/>
+    </lightning:card>
+</aura:component>
+
+Abra AccountMapController.jse substitua seu conteúdo pelo código a seguir e salve o arquivo.
+({
+    onAccountsLoaded: function( component, event, helper ) {
+        var mapMarkers = [];
+        var accounts = event.getParam( 'accounts' );
+        for ( var i = 0; i < accounts.length; i++ ) {
+            var account = accounts[i];
+            var marker = {
+                'location': {
+                    'Street': account.BillingStreet,
+                    'City': account.BillingCity,
+                    'PostalCode': account.BillingPostalCode
+                },
+                'title': account.Name,
+                'description': (
+                    'Phone: ' + account.Phone +
+                    'Website: ' + account.Website
+                ),
+                'icon': 'standard:location'
+            };
+            mapMarkers.push( marker );
+        }
+        component.set( 'v.mapMarkers', mapMarkers );
+    }
+})
+
+Envie seu novo código para a organização scratch.
+sfdx force:source:push
+
+*Crie o componente Aura do localizador de contas*
+
+Crie o componente AccountLocator na aurapasta.
+sfdx force:lightning:component:create -n AccountLocator -d force-app/main/default/aura
+
+
+Abra AccountLocator.cmpe substitua seu conteúdo pelo código a seguir e salve o arquivo.
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes">
+    <lightning:layout horizontalAlign="space" multipleRows="true">
+        <lightning:layoutItem size="12"
+                              mediumDeviceSize="12"
+                              padding="around-small">
+            <c:AccountSearch/>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="12"
+                              mediumDeviceSize="6"
+                              padding="around-small">
+            <c:AccountList/>
+        </lightning:layoutItem>
+        <lightning:layoutItem size="12"
+                              mediumDeviceSize="6"
+                              padding="around-small">
+            <c:AccountMap/>
+        </lightning:layoutItem>
+    </lightning:layout>
+</aura:component>
+
+
+Envie seu novo código para a organização scratch.
+sfdx force:source:push
+
+
