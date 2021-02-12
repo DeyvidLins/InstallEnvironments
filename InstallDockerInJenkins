@@ -2,8 +2,8 @@ docker/docker-install
 O objetivo do script de instalação é para uma conveniência para uma rápida 
 instalar as últimas versões do Docker-CE no linux suportado distros. 
 Não é recomendado depender deste script para implantação aos sistemas de produção.
- Para obter instruções mais completas sobre a instalação nas distros suportadas, 
- veja a instalação instruções .
+Para obter instruções mais completas sobre a instalação nas distros suportadas, 
+veja a instalação instruções .
 
 Este repositório é mantido exclusivamente pela Docker, Inc.
 Uso: 
