@@ -5,14 +5,11 @@ Não é recomendado depender deste script para implantação aos sistemas de pro
 Para obter instruções mais completas sobre a instalação nas distros suportadas, 
 veja a instalação instruções .
 
-Este repositório é mantido exclusivamente pela Docker, Inc.
-Uso: 
-De https://get.docker.com: 
 
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh get-docker.sh
 
-De https://test.docker.com: 
+
 
 curl -fsSL https://test.docker.com -o test-docker.sh
 sh test-docker.sh
@@ -24,3 +21,6 @@ Instale também o docker compose
 apt-get install docker-compose
 
 docker-compose -v
+
+
+Link de referência: https://github.com/docker/docker-install
